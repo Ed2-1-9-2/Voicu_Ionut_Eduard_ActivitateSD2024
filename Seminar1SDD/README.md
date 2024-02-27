@@ -1,1 +1,0 @@
-# SeminarSDD_1
