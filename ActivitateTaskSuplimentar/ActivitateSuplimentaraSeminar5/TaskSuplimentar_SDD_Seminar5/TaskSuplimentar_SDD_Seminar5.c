@@ -220,7 +220,7 @@ int main() {
     // Sa testam interschimbarea nodurilor
     InterschimbareNoduri(&cap, 0, 1); // Schimba nodului la pozitiile 0 si 1 
 
-    // Free memory
+    // Dezalocarea memoriei
     while (cap != NULL) {
         Nod* temp = cap;
         cap = cap->next;
