@@ -195,7 +195,12 @@ int indeplinesteConditia(VitrinaInteligenta produs, float valoareConditie) {
     }
     return 0; // returneaza 0 
 }
-
+        // Diferenta dintre lista simpla si lista dubla inlantuita presupun prin implementarea programului. Structura nodului pot avea diferenta de aplicabilitate . 
+        // Lista simpla inlantuita poate avea un nod care contine informatia si una de referinta catre urmatorul nod.
+        // Iar Lista dubla inlantuita poate avea acelasi nod doar ca la referinta inapoi de  
+        // . Accesul nodurilor pot avea o diferenta majora a celor 2 liste
+        //  Eficienta spatiilor ar putea fi o argumentare utila pentru a justifica distinctivitatea celor 2 liste
+        //  In ultim rand ,   
 
 void inserareListaSimpla(ListaSimpla* lista, VitrinaInteligenta produs) {
     NodLDR* nou = (NodLDR*)malloc(sizeof(NodLDR));
