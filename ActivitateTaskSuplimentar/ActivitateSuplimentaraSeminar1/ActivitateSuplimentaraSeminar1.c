@@ -102,7 +102,7 @@ void modificareDenumire(struct VitrinaInteligenta* vitrinamarcata, const char* p
 
 	if (vitrinamarcata->produs == NULL) {
 
-		printf("Se constat o eroare la alocarea memoriei pentru produsul nou. ");
+		printf("Se constatat o eroare la alocarea memoriei pentru produsul nou. ");
 
 		exit(EXIT_FAILURE);
 
