@@ -197,7 +197,6 @@ struct VitrinaInteligenta {
     float* preturi;
 };
 
-// Functie pentru citirea unui obiect VitrinaInteligenta din fisier
 struct VitrinaInteligenta citesteObiect(FILE* fisier) {
     struct VitrinaInteligenta vit;
 
@@ -216,7 +215,6 @@ struct VitrinaInteligenta citesteObiect(FILE* fisier) {
     return vit;
 }
 
-// Functie pentru citirea unui vector de obiecte VitrinaInteligenta din fisier
 void citesteVectorObiecte(FILE* fisier, struct VitrinaInteligenta vitrine[], int numarVitrine) {
     for (int i = 0; i < numarVitrine; i++) {
         fscanf(fisier, "%d", &vitrine[i].id);
@@ -233,7 +231,6 @@ void citesteVectorObiecte(FILE* fisier, struct VitrinaInteligenta vitrine[], int
     }
 }
 
-// Functie pentru salvarea unui obiect VitrinaInteligenta in fisier text
 void salveazaObiect(FILE* fisier, struct VitrinaInteligenta vit) {
     fprintf(fisier, "%d\n%s\n%d\n", vit.id, vit.produs, vit.nrElemente);
     for (int i = 0; i < vit.nrElemente; i++) {
@@ -242,7 +239,6 @@ void salveazaObiect(FILE* fisier, struct VitrinaInteligenta vit) {
     fprintf(fisier, "\n");
 }
 
-// Functie pentru salvarea unui vector de obiecte VitrinaInteligenta in fisier text
 void salveazaVectorObiecte(FILE* fisier, struct VitrinaInteligenta vitrine[], int numarVitrine) {
     for (int i = 0; i < numarVitrine; i++) {
         salveazaObiect(fisier, vitrine[i]);
@@ -290,7 +286,6 @@ int main() {
         printf("\n\n");
     }
 
-    // Eliberare memorie
     for (int i = 0; i < numarVitrine; i++) {
         free(vitrine[i].produs);
         free(vitrine[i].preturi);
