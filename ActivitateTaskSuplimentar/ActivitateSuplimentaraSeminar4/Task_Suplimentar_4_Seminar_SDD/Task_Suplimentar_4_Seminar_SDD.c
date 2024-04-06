@@ -14,7 +14,6 @@ struct VitrinaInteligenta {
     float* preturi;
 };
 
-// Functie pentru alocarea dinamica a unui obiect VitrinaInteligenta
 struct VitrinaInteligenta* alocaVitrina() {
     struct VitrinaInteligenta* vit = (struct VitrinaInteligenta*)malloc(sizeof(struct VitrinaInteligenta));
     if (vit == NULL) {
@@ -26,7 +25,6 @@ struct VitrinaInteligenta* alocaVitrina() {
 
 
 
-// Functie pentru citirea unui obiect VitrinaInteligenta dintr-un fisier
 struct VitrinaInteligenta citesteObiect(FILE* fisier) {
     struct VitrinaInteligenta vit;
     fscanf(fisier, "%d", &vit.id); // Read id
@@ -54,7 +52,6 @@ void citesteVectorObiecte(FILE* fisier, struct VitrinaInteligenta* vitrine[], in
     }
 }
 
-// Functie pentru salvarea unui obiect VitrinaInteligenta in fisier text
 void salveazaObiect(FILE* fisier, struct VitrinaInteligenta vit) {
     fprintf(fisier, "%d %s %d ", vit.id, vit.produs, vit.nrElemente);
     for (int i = 0; i < vit.nrElemente; i++) {
@@ -63,14 +60,12 @@ void salveazaObiect(FILE* fisier, struct VitrinaInteligenta vit) {
     fprintf(fisier, "\n");
 }
 
-// Functie pentru salvarea unui vector de obiecte VitrinaInteligenta in fisier text
 void salveazaVectorObiecte(FILE* fisier, struct VitrinaInteligenta* vitrine[], int numarVitrine) {
     for (int i = 0; i < numarVitrine; i++) {
         salveazaObiect(fisier, *vitrine[i]);
     }
 }
 
-// Functie pentru a copia elementele din vector intr-o matrice alocata dinamic
 float** copiazaVectorInMatrice(struct VitrinaInteligenta* vitrine[], int numarVitrine) {
     // Alocam spatiu pentru matrice
     float** matrice = (float**)malloc(numarVitrine * sizeof(float*));
@@ -98,7 +93,6 @@ float** copiazaVectorInMatrice(struct VitrinaInteligenta* vitrine[], int numarVi
 }
 
 
-// Functie pentru a muta liniile din matrice astfel incat acestea sa fie sortate dupa numarul de elemente de pe fiecare linie
 void sorteazaLiniiMatrice(float** matrice, int numarVitrine) {
     // Sortam liniile matricei in functie de numarul de elemente de pe fiecare linie
     for (int i = 0; i < numarVitrine - 1; i++) {
@@ -113,7 +107,6 @@ void sorteazaLiniiMatrice(float** matrice, int numarVitrine) {
     }
 }
 
-// Functie pentru a afisa elementele dintr-o matrice
 void afiseazaMatrice(float** matrice, int numarVitrine) {
     for (int i = 0; i < numarVitrine; i++) {
         printf("Linia %d: ", i + 1);
@@ -123,7 +116,6 @@ void afiseazaMatrice(float** matrice, int numarVitrine) {
         printf("\n");
     }
 }
-// Functie pentru eliberarea memoriei ocupate de un obiect VitrinaInteligenta
 void elibereazaVitrina(struct VitrinaInteligenta* vit) {
     free(vit->produs);
     free(vit->preturi);
@@ -138,15 +130,12 @@ int main() {
         return 1;
     }
 
-    // Alocam un vector pentru obiectele citite din fisier
     struct VitrinaInteligenta* vitrine[MAX_VITRINES];
 
-    // Citim obiectele din fisier si le salvam intr-un vector
     citesteVectorObiecte(fisier, vitrine, MAX_VITRINES);
 
     fclose(fisier);
 
-    // Copiem elementele din vector intr-o matrice
     float** matrice = copiazaVectorInMatrice(vitrine, MAX_VITRINES);
 
     // Afisam matricea initiala
@@ -154,14 +143,11 @@ int main() {
     afiseazaMatrice(matrice, MAX_VITRINES);
     printf("\n");
 
-    // Sortam liniile matricei dupa numarul de elemente
     sorteazaLiniiMatrice(matrice, MAX_VITRINES);
 
-    // Afisam matricea sortata
     printf("Matricea sortata:\n");
     afiseazaMatrice(matrice, MAX_VITRINES);
 
-    // Eliberam memoria alocata pentru obiectele din vector si pentru matrice
     for (int i = 0; i < MAX_VITRINES; i++) {
         elibereazaVitrina(vitrine[i]);
         free(matrice[i]);
