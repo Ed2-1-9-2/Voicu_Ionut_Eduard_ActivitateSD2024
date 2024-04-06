@@ -272,7 +272,6 @@ int main() {
 
     fclose(fisierIntrare);
 
-    // Afisare pentru verificare
     printf("Obiectele citite din fisier sunt:\n");
     for (int i = 0; i < numarVitrine; i++) {
         printf("Vitrina %d:\n", i + 1);
