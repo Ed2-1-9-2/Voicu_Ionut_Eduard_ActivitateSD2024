@@ -135,6 +135,7 @@ float mediaTerminale(struct Aeroport** matrice, int* nrAeroporturiLinie, int par
     }
     if (nrAeroporturiLinie[paritate]) {
         return suma / nrAeroporturiLinie[paritate];
+        // Alternativa pentru a fi conventionala media = (float)  (suma/nrAeroporturiLinie[paritate]); return media;
     }
     return 0;
 }

@@ -77,12 +77,12 @@ float** copiazaVectorInMatrice(struct VitrinaInteligenta* vitrine[], int numarVi
     // Copiem elementele din vector in matrice
     for (int i = 0; i < numarVitrine; i++) {
         // Alocam spatiu pentru fiecare linie a matricei
-        matrice[i] = (float*)malloc((vitrine[i]->nrElemente + 1) * sizeof(float)); // +1 for storing the number of elements
+        matrice[i] = (float*)malloc((vitrine[i]->nrElemente + 1) * sizeof(float)); 
         if (matrice[i] == NULL) {
             printf("Eroare la alocarea memoriei pentru linia %d a matricei.\n", i);
             exit(EXIT_FAILURE);
         }
-        // Storing the number of elements in the first position
+        // Stocam numarul de elementer din prima pozitie 
         matrice[i][0] = vitrine[i]->nrElemente;
         for (int j = 0; j < vitrine[i]->nrElemente; j++) {
             matrice[i][j + 1] = vitrine[i]->preturi[j];
