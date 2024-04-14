@@ -19,7 +19,7 @@ typedef struct Nod {
     struct Nod* next;
 } Nod;
 
-Biblioteca InitializareNod(const char* nume, int nrCarti, int nrCititori) {
+Biblioteca Initializare(const char* nume, int nrCarti, int nrCititori) {
     Biblioteca b;
     b.nume = (char*)malloc(sizeof(char) * (strlen(nume) + 1));
     strcpy(b.nume, nume);      // Incerc daca se poate sa fie conventional 
@@ -30,7 +30,7 @@ Biblioteca InitializareNod(const char* nume, int nrCarti, int nrCititori) {
 
 Nod* inserareInceput(Nod* cap, Biblioteca b) {
     Nod* nou = (Nod*)malloc(sizeof(Nod));
-    nou->info = InitializareNod(b.nume, b.nrCarti, b.nrCititori);
+    nou->info = Initializare(b.nume, b.nrCarti, b.nrCititori);
     nou->next = cap;
     return nou;
 }
@@ -53,23 +53,28 @@ char* getBibliotecaNrCartiPerCititor(Nod* cap) {
         cap = cap->next;
     }
     if (nume_aux == NULL) return NULL;
-    char* nume = _strdup(nume_aux);
+    char* nume = (char*)malloc(sizeof(char) * (strlen(nume_aux) + 1));
+    strcpy(nume, nume_aux);
     return nume;
 }
 
-void inserareSfarsit(Nod** cap, Biblioteca b) {
+void InserareLaSfarsit(Nod** cap, Biblioteca b) {
     Nod* sfarsit = (Nod*)malloc(sizeof(Nod));
-    sfarsit->info = InitializareNod(b.nume, b.nrCarti, b.nrCititori);
+
+    sfarsit->info = Initializare(b.nume, b.nrCarti, b.nrCititori);   // Eroare de initializare
     sfarsit->next = NULL;
-    if (*cap == NULL) {
+
+    if ((*cap) != NULL) {
+        Nod* capA = (*cap);
+        while (capA->next != NULL) {
+            capA = capA->next;
+        }
+        capA->next = sfarsit;
+    }
+    else {
         *cap = sfarsit;
-        return;
     }
-    Nod* ultimul = *cap;
-    while (ultimul->next != NULL) { // Care ar fi fost motivul pentru care nu m-am prins de la implementarea functiei ? :///// . Pur si simplu daca ultimul nod e initializat cu 0 si atribuit ca valoare , nu ar insemna ca ocupa spatiul degeaba .
-        ultimul = ultimul->next;
-    }
-    ultimul->next = sfarsit;
+
 }
 
 void stergeLista(Nod** cap) {
@@ -84,9 +89,9 @@ void stergeLista(Nod** cap) {
 
 int main() {
     Nod* cap = NULL;
-    Biblioteca b1 = InitializareNod("Mihai Eminescu", 150, 30);
-    Biblioteca b2 = InitializareNod("Ioan Slavici", 200, 30);
-    Biblioteca b3 = InitializareNod("Tudor Arghezi", 100, 15);
+    Biblioteca b1 = Initializare("Mihai Eminescu", 150, 30);
+    Biblioteca b2 = Initializare("Ioan Slavici", 200, 30);
+    Biblioteca b3 = Initializare("Tudor Arghezi", 100, 15);
 
     cap = inserareInceput(cap, b1);
     cap = inserareInceput(cap, b2);
@@ -103,9 +108,9 @@ int main() {
         printf("Lista este vida\n\n");
     }
 
-    Biblioteca b4 = InitializareNod("Radu Tudoran", 100, 15);
-    inserareSfarsit(&cap, b4);
-
+    Biblioteca b4 = Initializare("Radu Tudoran", 100, 15);
+    InserareLaSfarsit(&cap, b4);
+    afisareLista(cap);
     stergeLista(&cap);
 
     free(b1.nume);
@@ -115,7 +120,3 @@ int main() {
 
     return 0;
 }
-
-// Ce am putut sa constatat de la Seminarul 5 . Eu nu am avut vreo vina de la seminarul 5 cu implementarea functiei inserareSfarsit doar ca . 
-// Am observat ca la functia de stergeLista nu functiona cum trebuie iar mini-constructorul (adica functia de initializare a variabilei din structura nu corespunde initializarea numelui cum ar fi trebuit  . 
-// Insa am imbunatatit
