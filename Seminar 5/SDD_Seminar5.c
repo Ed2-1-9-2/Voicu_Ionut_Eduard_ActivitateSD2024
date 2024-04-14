@@ -1,6 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <string.h>
 
 
 // [i][X] --> [i][X] --->> [i][]---> null
@@ -24,7 +21,8 @@ typedef struct Nod {
 
 Biblioteca InitializareNod(const char* nume, int nrCarti, int nrCititori) {
     Biblioteca b;
-    b.nume = _strdup(nume);             // Nu prefer b.nume = nume; din pricina pierderii de memorie alocata pe stack pentru a introduce in heap . 
+    b.nume = (char*)malloc(sizeof(char) * (strlen(nume) + 1));
+    strcpy(b.nume, nume);      // Incerc daca se poate sa fie conventional 
     b.nrCarti = nrCarti;
     b.nrCititori = nrCititori;
     return b;
