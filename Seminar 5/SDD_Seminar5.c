@@ -86,9 +86,9 @@ void stergeLista(Nod** cap) {
 
 int main() {
     Nod* cap = NULL;
-    Biblioteca b1 = InitializareNod("Mihai Eminescu", 120, 20);
-    Biblioteca b2 = InitializareNod("Ioan Slavici", 120, 20);
-    Biblioteca b3 = InitializareNod("Tudor Arghezi", 120, 20);
+    Biblioteca b1 = InitializareNod("Mihai Eminescu", 150, 30);
+    Biblioteca b2 = InitializareNod("Ioan Slavici", 200, 30);
+    Biblioteca b3 = InitializareNod("Tudor Arghezi", 100, 15);
 
     cap = inserareInceput(cap, b1);
     cap = inserareInceput(cap, b2);
@@ -105,7 +105,7 @@ int main() {
         printf("Lista este vida\n\n");
     }
 
-    Biblioteca b4 = InitializareNod("Radu Tudoran", 120, 20);
+    Biblioteca b4 = InitializareNod("Radu Tudoran", 100, 15);
     inserareSfarsit(&cap, b4);
 
     stergeLista(&cap);
