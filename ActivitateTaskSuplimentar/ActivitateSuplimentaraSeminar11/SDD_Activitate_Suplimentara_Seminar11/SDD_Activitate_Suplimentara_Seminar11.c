@@ -1,7 +1,7 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
-             // Revin cu o analiza amanuntita
+// Revin cu o analiza amanuntita
 typedef struct Node {
     int key;
     struct Node* left;
@@ -12,7 +12,9 @@ typedef struct Node {
 typedef struct ListNode {
     Node* data;
     struct ListNode* next;
+    struct ListNode* prev;
 } ListNode;
+// Lista nodurilor pentru a crea lista simpla sau lista dubla
 
 Node* newNode(int key) {
     Node* node = (Node*)malloc(sizeof(Node));
@@ -115,16 +117,46 @@ void insertListNode(ListNode** head, Node* data) {
     newNode->next = *head;
     *head = newNode;
 }
-
-void preOrderToList(Node* root, ListNode** head) {
+void preOrdine(Node* root, Node** nodes, int* index) {
     if (root != NULL) {
-        insertListNode(head, root);
-        preOrderToList(root->left, head);
-        preOrderToList(root->right, head);
+        nodes[*index] = root;
+        (*index)++;
+        preOrdine(root->left, nodes, index);
+        preOrdine(root->right, nodes, index);
     }
 }
 
-void printList(ListNode* head) {
+void preOrdineLaListaSimpla(Node* root, ListNode** head) {
+    if (root != NULL) {
+        insertListNode(head, root);
+        preOrdineLaListaSimpla(root->left, head);
+        preOrdineLaListaSimpla(root->right, head);
+    }
+}
+void preOrdineLaListaDubla(Node* root, ListNode** head, ListNode** tail) {
+    if (root != NULL) {
+        ListNode* newNode = (ListNode*)malloc(sizeof(ListNode));
+        newNode->data = root;
+        newNode->next = NULL;
+        newNode->prev = *tail;
+        if (*tail != NULL)
+            (*tail)->next = newNode;
+        else
+            *head = newNode;
+        *tail = newNode;
+        preOrdineLaListaDubla(root->left, head, tail);
+        preOrdineLaListaDubla(root->right, head, tail);
+    }
+}
+
+void AfisareListaSimpla(ListNode* head) {
+    while (head != NULL) {
+        printf("%d ", head->data->key);
+        head = head->next;
+    }
+    printf("\n");
+}
+void AfisareListaDubla(ListNode* head) {
     while (head != NULL) {
         printf("%d ", head->data->key);
         head = head->next;
@@ -161,15 +193,32 @@ int main() {
     int keyToSearch = 30;
     Node* foundNode = search(root, keyToSearch);
     if (foundNode != NULL)
-        printf("Nodul cu cheia %d a fost gasit în arbore.\n", keyToSearch);
+        printf("Nodul cu cheia %d a fost gasit in arbore.\n", keyToSearch);
     else
-        printf("Nodul cu cheia %d nu a fost gasit în arbore.\n", keyToSearch);
+        printf("Nodul cu cheia %d nu a fost gasit in arbore.\n", keyToSearch);
+
+    Node* nodesPreOrder[100];
+    int indexPreOrder = 0;
+    preOrdine(root, nodesPreOrder, &indexPreOrder);
+    printf("Nodurile arborelui AVL in preordine: ");
+    for (int i = 0; i < indexPreOrder; i++) {
+        printf("%d ", nodesPreOrder[i]->key);
+    }
+    printf("\n");
 
     ListNode* preOrderList = NULL;
-    preOrderToList(root, &preOrderList);
-    printList(preOrderList);
+    preOrdineLaListaSimpla(root, &preOrderList);
+    printf("Nodurile arborelui AVL in lista simplu inlantuita: ");
+    AfisareListaSimpla(preOrderList);
+    ListNode* doubleListHead = NULL;
+    ListNode* doubleListTail = NULL;
+    preOrdineLaListaDubla(root, &doubleListHead, &doubleListTail);
+    printf("Nodurile arborelui AVL in lista dublu inlantuita: ");
+    AfisareListaDubla(doubleListHead);
 
+    // Eliberare memorie
     freeList(preOrderList);
     freeAVL(root);
 
+    return 0;
 }
