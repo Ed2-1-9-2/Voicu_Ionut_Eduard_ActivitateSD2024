@@ -125,6 +125,21 @@ void preOrdine(Node* root, Node** nodes, int* index) {
         preOrdine(root->right, nodes, index);
     }
 }
+void inOrdine(Node* root, ListNode** head) {
+    if (root != NULL) {
+        inOrdine(root->left, head);
+        insertListNode(head, root);
+        inOrdine(root->right, head);
+    }
+}
+
+void postOrdine(Node* root, ListNode** head) {
+    if (root != NULL) {
+        postOrdine(root->left, head);
+        postOrdine(root->right, head);
+        insertListNode(head, root);
+    }
+}
 
 void preOrdineLaListaSimpla(Node* root, ListNode** head) {
     if (root != NULL) {
@@ -208,13 +223,23 @@ int main() {
 
     ListNode* preOrderList = NULL;
     preOrdineLaListaSimpla(root, &preOrderList);
-    printf("Nodurile arborelui AVL in lista simplu inlantuita: ");
+    printf("Nodurile arborelui AVL in lista simplu inlantuita(postordine): ");
     AfisareListaSimpla(preOrderList);
+    ListNode* inOrderList = NULL;
+    inOrdine(root, &inOrderList);
+    printf("Nodurile arborelui AVL in lista simplu inlantuita (inordine): ");
+    AfisareListaSimpla(inOrderList);
+
+    ListNode* postOrderList = NULL;
+    postOrdine(root, &postOrderList);
+    printf("Nodurile arborelui AVL in lista simplu inlantuita (postordine): ");
+    AfisareListaSimpla(postOrderList);
     ListNode* doubleListHead = NULL;
     ListNode* doubleListTail = NULL;
     preOrdineLaListaDubla(root, &doubleListHead, &doubleListTail);
-    printf("Nodurile arborelui AVL in lista dublu inlantuita: ");
+    printf("Nodurile arborelui AVL in lista dublu inlantuita(preordine): ");
     AfisareListaDubla(doubleListHead);
+
 
     // Eliberare memorie
     freeList(preOrderList);
