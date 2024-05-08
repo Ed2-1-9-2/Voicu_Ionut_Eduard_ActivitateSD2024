@@ -17,8 +17,8 @@ Sa se realizeze o functie care salveaza nodurile din arborele AVL intr-o lista d
 // Revin cu o analiza amanuntita
 typedef struct Node {
     int key;
-    struct Node* left;
-    struct Node* right;
+    struct Node* stanga;
+    struct Node* dreapta;
     int height;
 } Node;
 
@@ -32,34 +32,34 @@ typedef struct ListNode {
 Node* newNode(int key) {
     Node* node = (Node*)malloc(sizeof(Node));
     node->key = key;
-    node->left = NULL;
-    node->right = NULL;
+    node->stanga = NULL;
+    node->dreapta = NULL;
     node->height = 1;
     return node;
 }
 
 Node* rightRotate(Node* y) {
-    Node* x = y->left;
-    Node* T2 = x->right;
+    Node* x = y->stanga;
+    Node* T2 = x->dreapta;
 
-    x->right = y;
-    y->left = T2;
+    x->dreapta = y;
+    y->stanga = T2;
 
-    y->height = (y->left ? y->left->height : 0) + 1;
-    x->height = (x->left ? x->left->height : 0) + 1;
+    y->height = (y->stanga ? y->stanga->height : 0) + 1;
+    x->height = (x->stanga ? x->stanga->height : 0) + 1;
 
     return x;
 }
 
 Node* leftRotate(Node* x) {
-    Node* y = x->right;
-    Node* T2 = y->left;
+    Node* y = x->dreapta;
+    Node* T2 = y->stanga;
 
-    y->left = x;
-    x->right = T2;
+    y->stanga = x;
+    x->dreapta = T2;
 
-    x->height = (x->left ? x->left->height : 0) + 1;
-    y->height = (y->right ? y->right->height : 0) + 1;
+    x->height = (x->stanga ? x->stanga->height : 0) + 1;
+    y->height = (y->dreapta ? y->dreapta->height : 0) + 1;
 
     return y;
 }
@@ -77,7 +77,7 @@ int height(Node* node) {
 int getBalance(Node* node) {
     if (node == NULL)
         return 0;
-    return height(node->left) - height(node->right);
+    return height(node->stanga) - height(node->dreapta);
 }
 
 Node* insert(Node* node, int key) {
@@ -85,29 +85,29 @@ Node* insert(Node* node, int key) {
         return newNode(key);
 
     if (key < node->key)
-        node->left = insert(node->left, key);
+        node->stanga = insert(node->stanga, key);
     else if (key > node->key)
-        node->right = insert(node->right, key);
+        node->dreapta = insert(node->dreapta, key);
     else
         return node;
 
-    node->height = 1 + maximum(height(node->left), height(node->right));
+    node->height = 1 + maximum(height(node->stanga), height(node->dreapta));
 
     int balance = getBalance(node);
 
-    if (balance > 1 && key < node->left->key)
+    if (balance > 1 && key < node->stanga->key)
         return rightRotate(node);
 
-    if (balance < -1 && key > node->right->key)
+    if (balance < -1 && key > node->dreapta->key)
         return leftRotate(node);
 
-    if (balance > 1 && key > node->left->key) {
-        node->left = leftRotate(node->left);
+    if (balance > 1 && key > node->stanga->key) {
+        node->stanga = leftRotate(node->stanga);
         return rightRotate(node);
     }
 
-    if (balance < -1 && key < node->right->key) {
-        node->right = rightRotate(node->right);
+    if (balance < -1 && key < node->dreapta->key) {
+        node->dreapta = rightRotate(node->dreapta);
         return leftRotate(node);
     }
 
@@ -119,9 +119,9 @@ Node* search(Node* root, int key) {
         return root;
 
     if (root->key < key)
-        return search(root->right, key);
+        return search(root->dreapta, key);
 
-    return search(root->left, key);
+    return search(root->stanga, key);
 }
 
 void insertListNode(ListNode** head, Node* data) {
@@ -134,8 +134,8 @@ void preOrdine(Node* root, Node** nodes, int* index) {
     if (root != NULL) {
         nodes[*index] = root;
         (*index)++;
-        preOrdine(root->left, nodes, index);
-        preOrdine(root->right, nodes, index);
+        preOrdine(root->stanga, nodes, index);
+        preOrdine(root->dreapta, nodes, index);
     }
 }
 void inserareListaDublaDeNod(ListNode** head, ListNode** tail, Node* data) {
@@ -157,42 +157,42 @@ void preOrdineLaVector(Node* root, Node** nodes, int* index) {
     if (root != NULL) {
         nodes[*index] = root;
         (*index)++;
-        preOrdineLaVector(root->left, nodes, index);
-        preOrdineLaVector(root->right, nodes, index);
+        preOrdineLaVector(root->stanga, nodes, index);
+        preOrdineLaVector(root->dreapta, nodes, index);
     }
 }
 
 
 void inOrdineLaVector(Node* root, Node** nodes, int* index) {
     if (root != NULL) {
-        inOrdineLaVector(root->left, nodes, index);
+        inOrdineLaVector(root->stanga, nodes, index);
         nodes[*index] = root;
         (*index)++;
-        inOrdineLaVector(root->right, nodes, index);
+        inOrdineLaVector(root->dreapta, nodes, index);
     }
 }
 
 
 void postOrdineLaVector(Node* root, Node** nodes, int* index) {
     if (root != NULL) {
-        postOrdineLaVector(root->left, nodes, index);
-        postOrdineLaVector(root->right, nodes, index);
+        postOrdineLaVector(root->stanga, nodes, index);
+        postOrdineLaVector(root->dreapta, nodes, index);
         nodes[*index] = root;
         (*index)++;
     }
 }
 void inOrdine(Node* root, ListNode** head) {
     if (root != NULL) {
-        inOrdine(root->left, head);
+        inOrdine(root->stanga, head);
         insertListNode(head, root);
-        inOrdine(root->right, head);
+        inOrdine(root->dreapta, head);
     }
 }
 
 void postOrdine(Node* root, ListNode** head) {
     if (root != NULL) {
-        postOrdine(root->left, head);
-        postOrdine(root->right, head);
+        postOrdine(root->stanga, head);
+        postOrdine(root->dreapta, head);
         insertListNode(head, root);
     }
 }
@@ -200,13 +200,13 @@ void postOrdine(Node* root, ListNode** head) {
 void preOrdineLaListaSimpla(Node* root, ListNode** head) {
     if (root != NULL) {
         insertListNode(head, root);
-        preOrdineLaListaSimpla(root->left, head);
-        preOrdineLaListaSimpla(root->right, head);
+        preOrdineLaListaSimpla(root->stanga, head);
+        preOrdineLaListaSimpla(root->dreapta, head);
     }
 }
 void inOrdineLaListaDubla(Node* root, ListNode** head, ListNode** tail) {
     if (root != NULL) {
-        inOrdineLaListaDubla(root->left, head, tail);
+        inOrdineLaListaDubla(root->stanga, head, tail);
 
         ListNode* newNode = (ListNode*)malloc(sizeof(ListNode));
         newNode->data = root;
@@ -220,7 +220,7 @@ void inOrdineLaListaDubla(Node* root, ListNode** head, ListNode** tail) {
 
         *tail = newNode;
 
-        inOrdineLaListaDubla(root->right, head, tail);
+        inOrdineLaListaDubla(root->dreapta, head, tail);
     }
 }
 
@@ -235,14 +235,14 @@ void preOrdineLaListaDubla(Node* root, ListNode** head, ListNode** tail) {
         else
             *head = newNode;
         *tail = newNode;
-        preOrdineLaListaDubla(root->left, head, tail);
-        preOrdineLaListaDubla(root->right, head, tail);
+        preOrdineLaListaDubla(root->stanga, head, tail);
+        preOrdineLaListaDubla(root->dreapta, head, tail);
     }
 }
 void postOrdineLaListaDubla(Node* root, ListNode** head, ListNode** tail) {
     if (root != NULL) {
-        postOrdineLaListaDubla(root->left, head, tail);
-        postOrdineLaListaDubla(root->right, head, tail);
+        postOrdineLaListaDubla(root->stanga, head, tail);
+        postOrdineLaListaDubla(root->dreapta, head, tail);
 
         ListNode* newNode = (ListNode*)malloc(sizeof(ListNode));
         newNode->data = root;
@@ -283,8 +283,8 @@ void freeList(ListNode* head) {
 
 void freeAVL(Node* root) {
     if (root != NULL) {
-        freeAVL(root->left);
-        freeAVL(root->right);
+        freeAVL(root->stanga);
+        freeAVL(root->dreapta);
         free(root);
     }
 }
@@ -409,3 +409,28 @@ int main() {
 
     return 0;
 }
+/*
+OUTPUT cod:
+Nodul cu cheia 30 a fost gasit in arbore.
+
+======================================================
+Nodurile arborelui AVL in preordine: 30 20 10 25 40 50
+
+======================================================
+Nodurile din arborele AVL in preordine (stocate in vector): 30 20 10 25 40 50
+Nodurile din arborele AVL in inordine (stocate in vector): 10 20 25 30 40 50
+Nodurile din arborele AVL in postordine (stocate in vector): 10 25 20 50 40 30
+
+======================================================
+Nodurile arborelui AVL in lista simplu inlantuita(preordine): 50 40 25 10 20 30
+Nodurile arborelui AVL in lista simplu inlantuita (inordine): 50 40 30 25 20 10
+Nodurile arborelui AVL in lista simplu inlantuita (postordine): 30 40 50 20 25 10
+
+======================================================
+Nodurile arborelui AVL in lista dublu inlantuita(preordine): 30 20 10 25 40 50
+Nodurile arborelui AVL in lista dublu inlantuita (inordine): 10 20 25 30 40 50
+Nodurile arborelui AVL in lista dublu inlantuita (postordine): 10 25 20 50 40 30
+30 40 50 20 25 10
+
+
+                                                                     */
