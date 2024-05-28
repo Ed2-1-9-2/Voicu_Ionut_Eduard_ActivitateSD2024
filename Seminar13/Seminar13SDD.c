@@ -7,6 +7,8 @@ typedef struct Metrou Metrou;
 typedef struct NodPrincipal NodPrincipal;
 typedef struct NodSecundar NodSecundar;
 
+// Parcurgeri 
+
 struct Metrou {
 	int serie;
 	int nrStatie;
